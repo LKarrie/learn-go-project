@@ -3,10 +3,10 @@ package db
 import (
 	"context"
 	"database/sql"
-	"simplebank/util"
 	"testing"
 	"time"
 
+	"github.com/LKarrie/learn-go-project/util"
 	"github.com/stretchr/testify/require"
 )
 
