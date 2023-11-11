@@ -22,7 +22,6 @@ migrateup1:
 migratedown1:
 	migrate -path db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
 
-
 sqlcwin:
 	docker run --rm -v $(CURDIR):/src -w /src sqlc/sqlc generate
 
