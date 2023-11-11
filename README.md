@@ -9,12 +9,15 @@ go mod tidy
 choco install make
 ```
 
-# install scoop
+# install migrate
 ## open powershell(admin)
 ```powershell
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser 
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 scoop install migrate
+
+
+migrate create -ext sql -dir db/migration -seq your_migration_name
 ```
 
 # fix make missing separator error
@@ -71,4 +74,40 @@ git config --global --get http.proxy
 git config --global --get https.proxy
 git config --global --unset http.proxy
 git config --global --unset https.proxy
+```
+
+# GIN
+> https://gin-gonic.com/zh-cn/docs/quickstart/
+```powershell
+go get -u github.com/gin-gonic/gin
+```
+
+# Viper
+> https://github.com/spf13/viper
+```powershell
+go get github.com/spf13/viper
+```
+
+# Gomock
+> https://github.com/uber-go/mock
+```powershell
+go install go.uber.org/mock/mockgen@latest
+mocken -version
+```
+```markdown
+error
+mockgen -destination db/mock/store.go github.com/LKarrie/learn-go-project/db/sqlc Store
+prog.go:12:2: no required module provides package go.uber.org/mock/mockgen/model; to add it:
+        go get go.uber.org/mock/mockgen/model
+prog.go:12:2: no required module provides package go.uber.org/mock/mockgen/model; to add it:
+        go get go.uber.org/mock/mockgen/model
+prog.go:14:2: no required module provides package github.com/LKarrie/learn-go-project/db/sqlc: go.mod file not found in current directory or any parent directory; see 'go help modules'      
+prog.go:12:2: no required module provides package go.uber.org/mock/mockgen/model: go.mod file not found in current directory or any parent directory; see 'go help modules'
+2023/11/11 16:36:13 Loading input failed: exit status 1
+
+fix:
+
+import _ "github.com/golang/mock/mockgen/model"
+mockgen --build_flags=--mod=mod -package mockdb -destination db/mock/store.go github.com/LKarrie/learn-go-project/db/sqlc Store
+
 ```

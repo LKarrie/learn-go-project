@@ -16,6 +16,13 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down
 
+migrateup1:
+	migrate -path db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up 1
+
+migratedown1:
+	migrate -path db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
+
+
 sqlcwin:
 	docker run --rm -v $(CURDIR):/src -w /src sqlc/sqlc generate
 
@@ -25,4 +32,11 @@ sqlcunix:
 test:
 	go test -v -cover ./...
 
-.PHONY: postgres createdb dropdb migrateinit migrateup migratedown sqlcwin sqlcunix 
+server:
+	go run main.go
+
+mock:
+	mockgen -destination db/mock/store.go  github.com/LKarrie/learn-go-project/db/sqlc Store
+
+
+.PHONY: postgres createdb dropdb migrateinit migrateup migratedown sqlcwin sqlcunix server mock
