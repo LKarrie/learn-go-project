@@ -76,6 +76,12 @@ git config --global --unset http.proxy
 git config --global --unset https.proxy
 ```
 
+# testify
+> https://github.com/stretchr/testify
+```powershell
+go get github.com/stretchr/testify
+```
+
 # GIN
 > https://gin-gonic.com/zh-cn/docs/quickstart/
 ```powershell
@@ -110,4 +116,21 @@ fix:
 import _ "github.com/golang/mock/mockgen/model"
 mockgen --build_flags=--mod=mod -package mockdb -destination db/mock/store.go github.com/LKarrie/learn-go-project/db/sqlc Store
 
+```
+
+# UUID
+```powershell
+go get github.com/google/uuid
+```
+
+# JWT
+> https://github.com/golang-jwt/jwt
+```powershell
+go get github.com/dgrijalva/jwt-go
+```
+
+# PASETO
+> https://github.com/o1egl/paseto
+```powershell
+go get github.com/o1egl/paseto
 ```
