@@ -142,3 +142,11 @@ git status
 git add .
 git commit -m "update readme"
 ```
+
+# Docker 
+```powershell
+docker network create bank-network
+docker network connect bank-network postgres12
+docker network inspect bank-network 
+docker container inspect postgres12
+```
