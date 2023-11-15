@@ -15,7 +15,7 @@ choco install make
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser 
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 scoop install migrate
-
+scoop update migrate
 
 migrate create -ext sql -dir db/migration -seq your_migration_name
 ```
@@ -133,4 +133,20 @@ go get github.com/dgrijalva/jwt-go
 > https://github.com/o1egl/paseto
 ```powershell
 go get github.com/o1egl/paseto
+```
+
+# GIT
+```powershell
+git checkout -b ft/docker
+git status
+git add .
+git commit -m "update readme"
+```
+
+# Docker 
+```powershell
+docker network create bank-network
+docker network connect bank-network postgres12
+docker network inspect bank-network 
+docker container inspect postgres12
 ```
