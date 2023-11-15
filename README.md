@@ -134,3 +134,9 @@ go get github.com/dgrijalva/jwt-go
 ```powershell
 go get github.com/o1egl/paseto
 ```
+
+# GIT
+```powershell
+git checkout -b ft/docker
+git status
+```
