@@ -17,15 +17,14 @@ jobs:
     - name: Login to aliyun
       uses: aliyun/acr-login@v1
       with:
-        login-server: https://registry.cn-shanghai.aliyuncs.com
-        region-id: cn-shanghai
-        access-key-id: "${{ secrets.ACCESS_KEY_ID }}"
-        access-key-secret: "${{ secrets.ACCESS_KEY_SECRET }}"
+        login-server: "${{ secrets.REGISTRY }}"
+        username: "${{ secrets.REGISTRY_USERNAME }}"
+        password: "${{ secrets.REGISTRY_PASSWORD }}"
 
     - name: Build and push image
       env:
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t registry.cn-shanghai.aliyuncs.com/lkarrie/simplebank:$IMAGE_TAG .
-        docker push registry.cn-shanghai.aliyuncs.com/lkarrie/simplebank:$IMAGE_TAG
+        docker build -t ${{ secrets.REGISTRY }}:$IMAGE_TAG .
+        docker push ${{ secrets.REGISTRY }}:$IMAGE_TAG
 
