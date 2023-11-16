@@ -17,6 +17,7 @@ jobs:
     - name: Login to aliyun
       uses: aliyun/acr-login@v1
       with:
+        login-server: https://registry.cn-shanghai.aliyuncs.com
         region-id: cn-shanghai
         access-key-id: ${{ secrets.ACCESS_KEY_ID }}
         access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
