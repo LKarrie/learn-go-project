@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Login to aliyun
-    - uses: aliyun/acr-login@v1
+      uses: aliyun/acr-login@v1
       with:
         region-id: cn-shanghai
         access-key-id: ${{ secrets.ACCESS_KEY_ID }}
