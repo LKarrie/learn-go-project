@@ -150,3 +150,26 @@ docker network connect bank-network postgres12
 docker network inspect bank-network 
 docker container inspect postgres12
 ```
+
+# Other
+```shell
+openssl rand -hex 64 | head -c 32
+```
+
+```markdown
+sh: ./wait-for.sh: not found
+CRLF TO LF
+
+Makefile:29: *** missing separator.  Stop.
+use tab in makefile not space
+```
+
+```markdwon
+npm install -g dbdocs
+dbdocs login
+dbdocs build doc/db.dbml
+dbdocs password --set secret --project simple_bank
+
+npm install -g @dbml/cli
+dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+```
