@@ -173,3 +173,26 @@ dbdocs password --set secret --project simple_bank
 npm install -g @dbml/cli
 dbml2sql --postgres -o doc/schema.sql doc/db.dbml
 ```
+
+# grpc
+```markdown
+4 types of grpc
+unary grpc
+client streaming grpc
+server streaming grpc
+bidirectional streaming grpc
+
+https://grpc.io/docs/languages/go/quickstart/
+
+install protobuf
+https://github.com/protocolbuffers/protobuf/releases
+
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+
+protoc --version
+protoc-gen-go --version
+protoc-gen-go-grpc --version
+
+https://protobuf.dev/programming-guides/proto3/
+```

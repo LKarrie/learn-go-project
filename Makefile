@@ -54,4 +54,10 @@ build:
 run:
 	docker run --name simplebank --network bank-network -p 8080:8080 -e GIN_MODE=release -e DB_SOURCE="postgres://root:secret@postgres12:5432/simple_bank?sslmode=disable&TimeZone=Asia/Shanghai" simplebank:latest
 
-.PHONY: newnetwork postgres createdb dropdb migrateinit migrateup migratedown sqlcwin sqlcunix test server mock build run dbdocs dbschema
+proto:
+	del .\pb\*.go
+	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative \
+	--go-grpc_out=pb --go-grpc_opt=paths=source_relative \
+	proto/*.proto
+
+.PHONY: newnetwork postgres createdb dropdb migrateinit migrateup migratedown sqlcwin sqlcunix test server mock build run dbdocs dbschema proto
