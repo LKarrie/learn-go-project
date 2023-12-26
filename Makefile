@@ -60,4 +60,7 @@ proto:
 	--go-grpc_out=pb --go-grpc_opt=paths=source_relative \
 	proto/*.proto
 
+evans:
+	evans --host localhost --port 9090 -r repl
+
 .PHONY: newnetwork postgres createdb dropdb migrateinit migrateup migratedown sqlcwin sqlcunix test server mock build run dbdocs dbschema proto

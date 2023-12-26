@@ -195,4 +195,14 @@ protoc-gen-go --version
 protoc-gen-go-grpc --version
 
 https://protobuf.dev/programming-guides/proto3/
+
+test grpc client 
+https://github.com/ktr0731/evans
+https://github.com/ktr0731/evans/releases
+
+package pb
+show service
+service LearnGo
+call CreateUser
+
 ```
