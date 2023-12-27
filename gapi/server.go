@@ -9,7 +9,7 @@ import (
 	"github.com/LKarrie/learn-go-project/util"
 )
 
-// Server servers gRPC requests for our banking service.
+// Server servers gRPC requests for my service.
 type Server struct {
 	pb.UnimplementedLearnGoServer
 	config     util.Config

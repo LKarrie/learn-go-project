@@ -206,3 +206,57 @@ service LearnGo
 call CreateUser
 
 ```
+
+# grpc gateway
+```markdown
+gRPC Gateway
+A plugin of protobuf compiler
+Generate proxy code from protobuf
+Translate HTTP JSON calls to gRPC
+* in-process translation: only for unary
+* Separate proxy server: both unary and streaming
+
+https://github.com/grpc-ecosystem/grpc-gateway
+https://grpc-ecosystem.github.io/grpc-gateway/
+https://github.com/grpc-ecosystem/grpc-gateway/blob/main/examples/internal/proto/examplepb/a_bit_of_everything.proto
+
+// +build tools
+
+package tools
+
+import (
+    _ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
+    _ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"
+    _ "google.golang.org/grpc/cmd/protoc-gen-go-grpc"
+    _ "google.golang.org/protobuf/cmd/protoc-gen-go"
+)
+
+go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway
+go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
+go install google.golang.org/protobuf/cmd/protoc-gen-go
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+protoc-gen-grpc-gateway -help
+
+```
+
+# swagger
+```markdown
+change swagger-initializer.js
+
+```
+
+# Statik
+```
+statik allows you to embed a directory of static files into your Go binary to be later served from an http.FileSystem.
+
+https://github.com/rakyll/statik
+
+tools file add github.com/rakyll/statik
+and
+go install github.com/rakyll/statik
+
+statik -help
+-ns      The namespace where assets will exist, "default" by default.
+
+```

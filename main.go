@@ -1,19 +1,25 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"net"
+	"net/http"
 
 	"github.com/LKarrie/learn-go-project/api"
 	db "github.com/LKarrie/learn-go-project/db/sqlc"
+	_ "github.com/LKarrie/learn-go-project/doc/statik"
 	"github.com/LKarrie/learn-go-project/gapi"
 	"github.com/LKarrie/learn-go-project/pb"
 	"github.com/LKarrie/learn-go-project/util"
 	_ "github.com/golang/mock/mockgen/model"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	_ "github.com/lib/pq"
+	"github.com/rakyll/statik/fs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func main() {
@@ -27,7 +33,7 @@ func main() {
 		log.Fatal("cannot connect to db:", err)
 	}
 	stroe := db.NewStore(conn)
-
+	go runGatewayServer(config, stroe)
 	runGrpcServer(config, stroe)
 }
 
@@ -36,6 +42,7 @@ func runGrpcServer(config util.Config, stroe db.Store) {
 	if err != nil {
 		log.Fatal("cannot create server:", err)
 	}
+
 	grpcServer := grpc.NewServer()
 	pb.RegisterLearnGoServer(grpcServer, server)
 	// allow client know what RPC api can execute
@@ -51,6 +58,52 @@ func runGrpcServer(config util.Config, stroe db.Store) {
 	err = grpcServer.Serve(listener)
 	if err != nil {
 		log.Fatal("cannot create gRPC server:", err)
+	}
+}
+
+func runGatewayServer(config util.Config, stroe db.Store) {
+	server, err := gapi.NewServer(config, stroe)
+	if err != nil {
+		log.Fatal("cannot create server:", err)
+	}
+
+	jsonOption := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+		MarshalOptions: protojson.MarshalOptions{
+			UseProtoNames: true,
+		},
+		UnmarshalOptions: protojson.UnmarshalOptions{
+			DiscardUnknown: true,
+		},
+	})
+
+	grpcMux := runtime.NewServeMux(jsonOption)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	pb.RegisterLearnGoHandlerServer(ctx, grpcMux, server)
+	if err != nil {
+		log.Fatal("cannot register handler server:", err)
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/", grpcMux)
+
+	statikFS, err := fs.NewWithNamespace("swagger")
+	if err != nil {
+		log.Fatal("cannot create statik fs:", err)
+	}
+	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer(statikFS))
+	mux.Handle("/swagger/", swaggerHandler)
+
+	listener, err := net.Listen("tcp", config.HTTPServerAddress)
+	if err != nil {
+		log.Fatal("cannot create listener:", err)
+	}
+
+	log.Printf("start HTTP gateway server at %s", listener.Addr().String())
+	err = http.Serve(listener, mux)
+	if err != nil {
+		log.Fatal("cannot create HTTP gateway server:", err)
 	}
 }
 
