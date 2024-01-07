@@ -18,6 +18,10 @@ scoop install migrate
 scoop update migrate
 
 migrate create -ext sql -dir db/migration -seq your_migration_name
+
+run migrate in code 
+https://github.com/golang-migrate/migrate
+
 ```
 
 # fix make missing separator error
