@@ -70,6 +70,12 @@ JOIN pg_locks l ON l.pid = a.pid
 ORDER BY a.pid;
 ```
 
+# sqlc
+```markdown
+https://github.com/sqlc-dev/sqlc
+https://docs.sqlc.dev/en/latest/
+```
+
 # git
 ```powershell
 git config --global http.proxy 127.0.0.1:7890
@@ -153,6 +159,10 @@ docker network create bank-network
 docker network connect bank-network postgres12
 docker network inspect bank-network 
 docker container inspect postgres12
+
+docker desktop WSL error
+run 
+netsh winsock reset  
 ```
 
 # Other
