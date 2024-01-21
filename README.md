@@ -291,3 +291,31 @@ debug (zerolog.DebugLevel, 0)
 trace (zerolog.TraceLevel, -1)
 
 ```
+
+# Anynq
+```markdwon
+https://github.com/hibiken/asynq
+Features
+Guaranteed at least one execution of a task
+Scheduling of tasks
+Retries of failed tasks
+Automatic recovery of tasks in the event of a worker crash
+Weighted priority queues
+Strict priority queues
+Low latency to add a task since writes are fast in Redis
+De-duplication of tasks using unique option
+Allow timeout and deadline per task
+Allow aggregating group of tasks to batch multiple successive operations
+Flexible handler interface with support for middlewares
+Ability to pause queue to stop processing tasks from the queue
+Periodic Tasks
+Support Redis Cluster for automatic sharding and high availability
+Support Redis Sentinels for high availability
+Integration with Prometheus to collect and visualize queue metrics
+Web UI to inspect and remote-control queues and tasks
+CLI to inspect and remote-control queues and tasks
+
+go get -u github.com/hibiken/asynq
+go mod tidy
+
+```
