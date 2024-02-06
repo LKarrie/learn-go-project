@@ -48,6 +48,7 @@ func (processor *RedisTaskProcessor) ProcessTaskSendVerifyEmail(ctx context.Cont
 
 	user, err := processor.store.GetUser(ctx, payload.Username)
 	if err != nil {
+		// if task ProcessIn(first delay) is too short, cant use skip retry
 		if err == sql.ErrNoRows {
 			return fmt.Errorf("user doesn't exist: %w", asynq.SkipRetry)
 		}

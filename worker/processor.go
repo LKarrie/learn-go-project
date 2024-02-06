@@ -5,6 +5,7 @@ import (
 
 	db "github.com/LKarrie/learn-go-project/db/sqlc"
 	"github.com/hibiken/asynq"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -23,6 +24,11 @@ type RedisTaskProcessor struct {
 }
 
 func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) TaskProcessor {
+	logger := NewLogger()
+	// github.com/hibiken/asynq v0.23.0 use v8 redis, new version use v9
+	// v9 cant change redis log
+	// redis.SetLogger(logger)
+
 	server := asynq.NewServer(
 		redisOpt,
 		asynq.Config{
@@ -30,6 +36,11 @@ func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) TaskPr
 				QueueCritical: 10,
 				QueueDefault:  3,
 			},
+			ErrorHandler: asynq.ErrorHandlerFunc(func(ctx context.Context, task *asynq.Task, err error) {
+				log.Error().Err(err).Str("type", task.Type()).
+					Bytes("payload", task.Payload()).Msg("process task failed")
+			}),
+			Logger: logger,
 		},
 	)
 

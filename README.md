@@ -319,3 +319,11 @@ go get -u github.com/hibiken/asynq
 go mod tidy
 
 ```
+
+# email
+```markdown
+https://github.com/jordan-wright/email
+
+go get github.com/jordan-wright/email
+
+```
