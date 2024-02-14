@@ -34,15 +34,15 @@ func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 		Username: req.GetUsername(),
 		FullName: sql.NullString{
 			String: req.GetFullName(),
-			Valid:  req.FullName != "",
+			Valid:  req.GetFullName() != "",
 		},
 		Email: sql.NullString{
 			String: req.GetEmail(),
-			Valid:  req.Email != "",
+			Valid:  req.GetEmail() != "",
 		},
 	}
 
-	if req.Password != "" {
+	if req.GetPassword() != "" {
 		hashedPassword, err := util.HashPassword(req.GetPassword())
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to hash password: %s", err)
@@ -77,19 +77,19 @@ func validateUpdateUserRequest(req *pb.UpdateUserRequest) (violations []*errdeta
 		violations = append(violations, fieldViolation("username", err))
 	}
 
-	if req.Password != "" {
+	if req.GetPassword() != "" {
 		if err := val.ValidatePassword(req.GetPassword()); err != nil {
 			violations = append(violations, fieldViolation("password", err))
 		}
 	}
 
-	if req.FullName != "" {
+	if req.GetFullName() != "" {
 		if err := val.ValidateFullname(req.GetFullName()); err != nil {
 			violations = append(violations, fieldViolation("full_name", err))
 		}
 	}
 
-	if req.Email != "" {
+	if req.GetEmail() != "" {
 		if err := val.ValidateEamil(req.GetEmail()); err != nil {
 			violations = append(violations, fieldViolation("email", err))
 		}

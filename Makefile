@@ -27,6 +27,9 @@ migrateup1:
 migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
+newmigration:
+	migrate create -ext sql -dir db/migration -seq $(name)
+
 dbdocs:
 	dbdocs build doc/db.dbml
 
@@ -40,7 +43,7 @@ sqlcunix:
 	sqlc generate
 
 test:
-	go test -v -cover ./...
+	go test -v -cover -short ./...
 
 server:
 	go run main.go
@@ -70,4 +73,4 @@ evans:
 redis:
 	docker run --name redis -p 6379:6379 -d redis:7-alpine
 
-.PHONY: newnetwork postgres createdb dropdb migrateinit migrateup migratedown sqlcwin sqlcunix test server mock build run dbdocs dbschema proto redis
+.PHONY: newnetwork postgres createdb dropdb migrateinit migrateup migratedown migrateup1 migratedown1 newmigration sqlcwin sqlcunix test server mock build run dbdocs dbschema proto redis

@@ -15,6 +15,7 @@ import (
 	db "github.com/LKarrie/learn-go-project/db/sqlc"
 	_ "github.com/LKarrie/learn-go-project/doc/statik"
 	"github.com/LKarrie/learn-go-project/gapi"
+	"github.com/LKarrie/learn-go-project/mail"
 	"github.com/LKarrie/learn-go-project/pb"
 	"github.com/LKarrie/learn-go-project/util"
 	"github.com/LKarrie/learn-go-project/worker"
@@ -57,7 +58,7 @@ func main() {
 	}
 
 	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
-	go runTaskProcess(redisOpt, stroe)
+	go runTaskProcess(config, redisOpt, stroe)
 	go runGatewayServer(config, stroe, taskDistributor)
 	runGrpcServer(config, stroe, taskDistributor)
 }
@@ -74,8 +75,9 @@ func runDBMigration(migrationURL string, dbSource string) {
 	log.Info().Msg("db migrated successfully")
 }
 
-func runTaskProcess(redisOpt asynq.RedisClientOpt, store db.Store) {
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+func runTaskProcess(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
+	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
 	log.Info().Msg("start task processor")
 	err := taskProcessor.Start()
 	if err != nil {

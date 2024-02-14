@@ -8,6 +8,10 @@ import (
 )
 
 func TestSendEmailWithGmail(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
 	config, err := util.LoadConfig("..")
 	require.NoError(t, err)
 	sender := NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
@@ -16,7 +20,7 @@ func TestSendEmailWithGmail(t *testing.T) {
 	content := `
 	<h1>hello world</h1>
 	`
-	to := []string{"test@gmail.com"}
+	to := []string{"lkarrie616@gmail.com"}
 	attachFiles := []string{"../README.md"}
 
 	sender.SendEmail(subject, content, to, nil, nil, attachFiles)

@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	LearnGo_CreateUser_FullMethodName = "/pb.LearnGo/CreateUser"
-	LearnGo_UpdateUser_FullMethodName = "/pb.LearnGo/UpdateUser"
-	LearnGo_LoginUser_FullMethodName  = "/pb.LearnGo/LoginUser"
+	LearnGo_CreateUser_FullMethodName  = "/pb.LearnGo/CreateUser"
+	LearnGo_UpdateUser_FullMethodName  = "/pb.LearnGo/UpdateUser"
+	LearnGo_LoginUser_FullMethodName   = "/pb.LearnGo/LoginUser"
+	LearnGo_VerifyEmail_FullMethodName = "/pb.LearnGo/VerifyEmail"
 )
 
 // LearnGoClient is the client API for LearnGo service.
@@ -31,6 +32,7 @@ type LearnGoClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
 }
 
 type learnGoClient struct {
@@ -68,6 +70,15 @@ func (c *learnGoClient) LoginUser(ctx context.Context, in *LoginUserRequest, opt
 	return out, nil
 }
 
+func (c *learnGoClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error) {
+	out := new(VerifyEmailResponse)
+	err := c.cc.Invoke(ctx, LearnGo_VerifyEmail_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LearnGoServer is the server API for LearnGo service.
 // All implementations must embed UnimplementedLearnGoServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type LearnGoServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
 	mustEmbedUnimplementedLearnGoServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedLearnGoServer) UpdateUser(context.Context, *UpdateUserRequest
 }
 func (UnimplementedLearnGoServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
+func (UnimplementedLearnGoServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
 }
 func (UnimplementedLearnGoServer) mustEmbedUnimplementedLearnGoServer() {}
 
@@ -158,6 +173,24 @@ func _LearnGo_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LearnGo_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LearnGoServer).VerifyEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LearnGo_VerifyEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LearnGoServer).VerifyEmail(ctx, req.(*VerifyEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LearnGo_ServiceDesc is the grpc.ServiceDesc for LearnGo service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var LearnGo_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginUser",
 			Handler:    _LearnGo_LoginUser_Handler,
+		},
+		{
+			MethodName: "VerifyEmail",
+			Handler:    _LearnGo_VerifyEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
