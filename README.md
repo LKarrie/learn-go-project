@@ -74,6 +74,21 @@ ORDER BY a.pid;
 ```markdown
 https://github.com/sqlc-dev/sqlc
 https://docs.sqlc.dev/en/latest/
+
+version 1
+
+version: "1"
+packages:
+  - name: "db"
+    path: "./db/sqlc"
+    queries: "./db/query/"
+    schema: "./db/migration/"
+    engine: "postgresql"
+    emit_json_tags: true
+    emit_prepared_queries: false
+    emit_interface: true
+    emit_exact_table_names: false
+    emit_empty_slices: true
 ```
 
 # git
