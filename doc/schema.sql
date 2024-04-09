@@ -2,6 +2,7 @@
 -- Database: PostgreSQL
 -- Generated at: 2024-02-14T10:18:12.389Z
 
+
 CREATE TABLE "users" (
   "username" varchar PRIMARY KEY,
   "hashed_password" varchar NOT NULL,
