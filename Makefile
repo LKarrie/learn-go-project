@@ -50,6 +50,7 @@ server:
 
 mock:
 	mockgen -destination db/mock/store.go  github.com/LKarrie/learn-go-project/db/sqlc Store
+	mockgen -package mockwk -destination worker/mock/distributor.go github.com/LKarrie/learn-go-project/worker TaskDistributor
 
 build:
 	docker build -t simplebank:latest .
