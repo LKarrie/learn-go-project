@@ -201,6 +201,7 @@ dbdocs password --set secret --project simple_bank
 
 npm install -g @dbml/cli
 dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+
 ```
 
 # grpc
