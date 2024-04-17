@@ -13,7 +13,6 @@ import (
 	"github.com/LKarrie/learn-go-project/util"
 	"github.com/LKarrie/learn-go-project/worker"
 	mockwk "github.com/LKarrie/learn-go-project/worker/mock"
-	"github.com/lib/pq"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
@@ -152,7 +151,7 @@ func TestCreateUserAPI(t *testing.T) {
 				store.EXPECT().
 					CreateUserTx(gomock.Any(), gomock.Any()).
 					Times(1).
-					Return(db.CreateUserTxResult{}, &pq.Error{Code: "23505"})
+					Return(db.CreateUserTxResult{}, db.ErrUniqueViolation)
 
 				taskDistributor.EXPECT().
 					DistributorTaskSendVerifyEmail(gomock.Any(), gomock.Any(), gomock.Any()).
