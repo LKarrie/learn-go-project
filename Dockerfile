@@ -7,7 +7,7 @@ RUN go env -w GO111MODULE=on &&\
     go build -o main main.go
 
 # RUN stage
-FROM alpine:3.15
+FROM alpine:3.18
 WORKDIR /app
 COPY --from=builder /app/main .
 COPY app.env .
